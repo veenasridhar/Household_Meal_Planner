@@ -1,0 +1,9 @@
+[project]
+name = "household-meal-planner"
+version = "0.1.0"
+description = "Application to assist in meal planning with around the week."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.0",
+]
