@@ -11,6 +11,7 @@ def add_ingredient(ingredients, quantity, unit):
     st.session_state.ingredients_dict.append(curr_ingredient)
 
 def save_recipe():
+    
     recipe_data = {'name' : st.session_state.recipe_name, 
                    'cooking_instructions' : st.session_state.cooking_instructions,
                     'meal_type' : st.session_state.meal_type, 
