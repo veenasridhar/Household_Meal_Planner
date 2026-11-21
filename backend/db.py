@@ -21,11 +21,7 @@ def insert_rows(row,engine=engine):
     return row.id
 
 def get_ingredients_list():
-    with Session(engine) as session:
-        statement = select(models.ingredient.name)
-        result = session.exec(statement).all
-        logger.info('tHE RESULT IS {}',result)
-        return result
+    pass
 
-create_tables()
+#create_tables()
 

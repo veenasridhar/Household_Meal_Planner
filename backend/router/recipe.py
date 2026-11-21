@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from backend.models import *
+from backend.schemas import *
 from utils.log_setup import logger
 from backend.db import *
 
@@ -28,16 +29,20 @@ def add_recipe(recipe_data:Recipe):
                 serving_size = recipe_data.serving_size)
 
         for ingredient in recipe_data.recipe_ingredients:
-        
-            curr_ingredient = ingredient_schema(
-                name=ingredient.ingredient_name,
-            )
 
-            recipe_ingredient = RecipeIngredient_schema(
-                ingredient = curr_ingredient,
-                quantity=ingredient.quantity,
-                unit = ingredient.unit)
-            new_recipe.recipe_ingredients.append(recipe_ingredient)
+            if ingredient.ingredient_name != '':
+
+                logger.info('{}',ingredient.ingredient_name)
+        
+                curr_ingredient = ingredient_schema(
+                    name=ingredient.ingredient_name,
+                )
+
+                recipe_ingredient = RecipeIngredient_schema(
+                    ingredient = curr_ingredient,
+                    quantity=ingredient.quantity,
+                    unit = ingredient.unit)
+                new_recipe.recipe_ingredients.append(recipe_ingredient)
 
         session.add(new_recipe)
         session.commit()
@@ -45,11 +50,14 @@ def add_recipe(recipe_data:Recipe):
         return {"message": "Recipe added successfully",
                 "recipe_id":new_recipe.id}
 
-@router.get(f"/ingredients_list")
+@router.get(f"/ingredients_list",response_model=List)
 def get_ingredients_list():
-    # Example of retrieving the ingredients list for a specific user
-    ingredients = get_ingredients_list()
-    return {"ingredients": ingredients}
+    # Retrieving the ingredients list.
+    with Session(engine) as session:
+        statement = select(ingredient_schema.name)
+        result = session.scalars(statement).all()
+        logger.info('{}',result)
+    return result
 
 # def get_ingredients_list():
 #     response = requests.get(f"{base_url}/ingredients_list")

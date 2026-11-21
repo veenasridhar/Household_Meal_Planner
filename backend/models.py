@@ -41,6 +41,9 @@ class user(BaseModel):
     name:str
     dietary_restrictions:str
 
+class IngredientName(BaseModel):
+    ingredient_name:str
+
 class Ingredients(BaseModel):
     ingredient_id: int | None=Field(default=None, description='Id Primary key')
     ingredient_name:str
